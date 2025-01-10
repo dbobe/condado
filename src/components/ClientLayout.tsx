@@ -13,7 +13,7 @@ export default function ClientLayout({
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      setIsMobile(window.innerWidth <= 1024);
     };
 
     // Initial check
@@ -27,7 +27,7 @@ export default function ClientLayout({
   }, []);
 
   return (
-    <div className="flex">
+    <div className="flex flex-col h-screen lg:flex-row">
       {isMobile ? <Navbar /> : <SideBar />}
       <main className="flex-1">{children}</main>
     </div>

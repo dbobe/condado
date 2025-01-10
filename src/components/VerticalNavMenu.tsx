@@ -12,6 +12,8 @@ import {
   SettingsIcon,
   LogOutIcon,
   LucideIcon,
+  WrenchIcon,
+  UserCogIcon,
 } from "lucide-react";
 
 export type NavItem = {
@@ -29,12 +31,12 @@ export const generalNavItems: NavItem[] = [
   {
     icon: ContactIcon,
     label: "Customers",
-    href: "/customers",
+    href: "/dashboard/customers",
   },
   {
     icon: FileText,
     label: "Documents",
-    href: "/documents",
+    href: "/dashboard/documents",
   },
 ];
 
@@ -53,6 +55,19 @@ export const supportNavItems: NavItem[] = [
     icon: LogOutIcon,
     label: "Logout",
     href: "/logout",
+  },
+];
+
+export const adminNavItems: NavItem[] = [
+  {
+    icon: WrenchIcon,
+    label: "Company Management",
+    href: "/dashboard/company-management",
+  },
+  {
+    icon: UserCogIcon,
+    label: "User Management",
+    href: "/dashboard/user-management",
   },
 ];
 

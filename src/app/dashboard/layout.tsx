@@ -1,4 +1,3 @@
-// import ClientLayout from "@/components/ClientLayout";
 import Navbar from "@/components/Navbar";
 import SideBar from "@/components/SideBar";
 
@@ -8,14 +7,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="max-h-screen flex flex-col lg:flex-row">
+    <div className="flex flex-col h-screen lg:flex-row">
       <div className="block lg:hidden">
         <Navbar />
       </div>
       <div className="hidden lg:block">
         <SideBar />
       </div>
-      {children}
+      <main className="flex-1 overflow-auto">{children}</main>
     </div>
   );
 }

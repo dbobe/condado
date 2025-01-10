@@ -10,8 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import ThemeToggler from "@/components/ThemeToggler";
+import {
+  adminNavItems,
+  generalNavItems,
+  supportNavItems,
+} from "./VerticalNavMenu";
 
 export default function Navbar() {
+  const isAdmin = true;
+
   return (
     <div className="bg-primary py-2 px-5 flex justify-between text-white">
       <Link href="/" className="flex items-center gap-2 flex-row">
@@ -33,17 +40,31 @@ export default function Navbar() {
             </Avatar>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>General</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/profile">Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="/settings">Settings</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link href="/auth">Logout</Link>
-            </DropdownMenuItem>
+            {generalNavItems.map((item) => (
+              <DropdownMenuItem key={item.label}>
+                <Link href={item.href}>{item.label}</Link>
+              </DropdownMenuItem>
+            ))}
+            <DropdownMenuLabel className="mt-4">Support</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            {supportNavItems.map((item) => (
+              <DropdownMenuItem key={item.label}>
+                <Link href={item.href}>{item.label}</Link>
+              </DropdownMenuItem>
+            ))}
+            {isAdmin && (
+              <>
+                <DropdownMenuLabel className="mt-4">Admin</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {adminNavItems.map((item) => (
+                  <DropdownMenuItem key={item.label}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </DropdownMenuItem>
+                ))}
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

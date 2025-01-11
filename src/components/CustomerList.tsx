@@ -20,7 +20,7 @@ export default function CustomerList({ onSelectCustomer }: CustomerListProps) {
   console.log("🚀 ~ CustomerList ~ filteredCustomers:", filteredCustomers);
 
   return (
-    <div className="w-64 p-4 h-full border-r border-primary-foreground">
+    <div className="w-64 p-4 h-full border-r border-primary">
       <h5 className="font-bold mb-2">Filter by name or company</h5>
       <Input
         placeholder="Search customers..."

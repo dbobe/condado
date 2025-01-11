@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Customer } from "@/lib/data";
 import CustomerList from "@/components/CustomerList";
 import CustomerDetails from "@/components/CustomerDetails";
+import CrudBtnBar from "@/components/CrudBtnBar";
 
 export default function Customers() {
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
@@ -17,8 +18,9 @@ export default function Customers() {
       </div>
       <div className="flex flex-1 overflow-hidden">
         <CustomerList onSelectCustomer={setSelectedCustomer} />
-        <div className="flex-1 overflow-auto">
+        <div className="flex-1 overflow-auto flex flex-col justify-between">
           <CustomerDetails customer={selectedCustomer} />
+          <CrudBtnBar />
         </div>
       </div>
     </div>

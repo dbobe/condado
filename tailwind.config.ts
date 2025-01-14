@@ -78,6 +78,14 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        "bebas-neue-pro": ["bebas-neue-pro", "sans-serif"],
+        "bebas-neue-pro-semiexpanded": [
+          "bebas-neue-pro-semiexpanded",
+          "sans-serif",
+        ],
+        "bebas-neue-pro-expanded": ["bebas-neue-pro-expanded", "sans-serif"],
+      },
     },
   },
   // eslint-disable-next-line @typescript-eslint/no-require-imports

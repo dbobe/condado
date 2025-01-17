@@ -37,7 +37,6 @@ body {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -75,5 +74,36 @@ body {
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .form-btn {
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-14 w-full items-center justify-center rounded-md px-6 py-2 font-bold text-base !important;
+  }
+  .form-input {
+    @apply w-full min-h-14 border-none text-base font-bold placeholder:font-normal bg-background border border-input;
+  }
+}
+
+@layer utilities {
+  /* Gradients */
+  .gradient-vertical {
+    background: linear-gradient(180deg, #232323 0%, #232323 100%);
+  }
+  /* Auth */
+  .auth-container {
+    @apply relative flex flex-col-reverse sm:flex-row;
+  }
+
+  .auth-form {
+    @apply my-auto flex h-full min-h-screen flex-1 items-center px-5 py-10 bg-primary;
+  }
+
+  .auth-box {
+    @apply bg-card mx-auto flex max-w-xl flex-col gap-6 rounded-lg p-10;
+  }
+  .auth-image {
+    @apply sticky h-40 w-full sm:top-0 sm:h-screen sm:flex-1;
   }
 }

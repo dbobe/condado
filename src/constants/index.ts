@@ -1,3 +1,15 @@
+import {
+  ContactIcon,
+  FileText,
+  HomeIcon,
+  InfoIcon,
+  LogOutIcon,
+  SettingsIcon,
+  UserCogIcon,
+  WrenchIcon,
+} from "lucide-react";
+import { NavigationItem } from "../../types";
+
 export const FIELD_NAMES = {
   firstName: "First Name",
   lastName: "Last Name",
@@ -11,17 +23,6 @@ export const FIELD_TYPES = {
   email: "email",
   password: "password",
 };
-import {
-  ContactIcon,
-  FileText,
-  HomeIcon,
-  InfoIcon,
-  LogOutIcon,
-  SettingsIcon,
-  UserCogIcon,
-  WrenchIcon,
-} from "lucide-react";
-import { NavigationItem } from "../../types";
 
 export const GENERAL_NAV_ITEMS: NavigationItem[] = [
   {

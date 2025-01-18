@@ -28,8 +28,8 @@ export default function AppSidebar({
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="flex items-center gap-2 flex-row">
-        <div className="flex aspect-square size-10 items-center justify-center rounded-md bg-sidebar-primary text-sidebar-primary-foreground">
-          <CWlogo className="size-8" />
+        <div className="flex aspect-square size-10 items-center justify-center rounded-md text-primary">
+          <CWlogo />
         </div>
         <div className="grid flex-1 text-left text-sm leading-tight">
           <span className="truncate font-semibold">Condado Window</span>

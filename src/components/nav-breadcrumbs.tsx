@@ -27,8 +27,9 @@ export function NavBreadcrumbs({
     const breadcrumbs = paths.map((path, index) => {
       const href = "/" + paths.slice(0, index + 1).join("/");
       const label = capitalizeLabel
-        ? path.charAt(0).toUpperCase() + path.slice(1).replace(/-/g, " ")
-        : path.replace(/-/g, " ");
+        ? decodeURI(path).charAt(0).toUpperCase() +
+          decodeURI(path).slice(1).replace(/-/g, " ")
+        : decodeURI(path).replace(/-/g, " ");
       return { href, label };
     });
     return [{ href: "/", label: homeLabel }, ...breadcrumbs];

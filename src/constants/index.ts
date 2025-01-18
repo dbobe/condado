@@ -33,7 +33,7 @@ export const GENERAL_NAV_ITEMS: NavigationItem[] = [
   {
     icon: ContactIcon,
     label: "Customers",
-    href: "/dashboard/customers",
+    href: "/customers",
   },
   {
     icon: FileText,

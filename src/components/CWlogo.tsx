@@ -1,6 +1,10 @@
 import { cn } from "@/lib/utils";
 
-export default function CWlogo({ className }: { className: string }) {
+interface logoProps {
+  className?: string;
+}
+
+export default function CWlogo({ className }: logoProps) {
   return (
     <svg
       id="Layer_1"

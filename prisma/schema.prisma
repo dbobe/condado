@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id               String    @id @default(cuid())
+  // Company information
+  name             String
+  logoUrl          String?
+  websiteUrl       String?
+  // Company branding
+  primaryColor     String?
+  secondaryColor   String?
+  // Company type and relationships
+  isPrimary        Boolean   @default(false)
+  // Self-relation to primary company
+  primaryCompanyId String?
+  primaryCompany   Company?  @relation("CompanyToPrimaryCompany", fields: [primaryCompanyId], references: [id])
+  // Subsidiaries
+  subsidiaries     Company[] @relation("CompanyToSubsidiary")
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  // Relations
+  users User[]
+  @@check(isPrimary == (primaryCompanyId == null))
+
+  @@unique([isPrimary, primaryCompanyId])
+  @@map("companies")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Role enum for user permissions
+  role UserRole @default(USER)
+
+  // Relation to company (required)
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  @@map("users")
+}
+
+enum UserRole {
+  ADMIN
+  MANAGER
+  USER
+}

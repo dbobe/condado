@@ -20,7 +20,7 @@ export default function SignInPage() {
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
+          <div className="w-full flex max-w-sm bg-muted p-8 rounded-md">
             <AuthForm
               type="SIGN_IN"
               schema={signInSchema}

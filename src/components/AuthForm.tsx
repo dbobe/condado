@@ -15,11 +15,14 @@ import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+
 interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
   onSubmit: (data: T) => Promise<{ success: boolean; error?: string }>;
   type: "SIGN_IN" | "SIGN_UP";
+  isLoading?: boolean;
 }
 
 export default function AuthForm<T extends FieldValues>({
@@ -27,6 +30,7 @@ export default function AuthForm<T extends FieldValues>({
   defaultValues,
   onSubmit,
   type,
+  isLoading = false,
 }: AuthFormProps<T>) {
   const isSignIn = type === "SIGN_IN";
 
@@ -76,8 +80,17 @@ export default function AuthForm<T extends FieldValues>({
               )}
             />
           ))}
-          <Button type="submit" className="form-btn">
-            {isSignIn ? "Sign In" : "Sign Up"}
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Please wait
+              </>
+            ) : type === "SIGN_IN" ? (
+              "Sign In"
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </form>
       </Form>

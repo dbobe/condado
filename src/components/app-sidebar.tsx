@@ -16,24 +16,26 @@ import {
 } from "@/constants";
 import { NavUser } from "./nav-user";
 
+export const user = {
+  name: "Fulano deTal",
+  email: "fulano.detal@example.com",
+  avatar: "https://github.com/shadcn.png",
+};
+
 export default function AppSidebar({
   ...props
 }: ComponentProps<typeof Sidebar>) {
   const isAdmin = true;
-  const user = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    avatar: "https://github.com/shadcn.png",
-  };
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader className="flex items-center gap-2 flex-row">
-        <div className="flex aspect-square size-10 items-center justify-center rounded-md text-primary">
+        <div className="flex aspect-square size-8 items-center justify-center rounded-md text-primary">
           <CWlogo />
         </div>
-        <div className="grid flex-1 text-left text-sm leading-tight">
+        <div className="grid flex-1 text-left text-lg leading-tight">
           <span className="truncate font-semibold">Condado Window</span>
-          <span className="truncate text-xs">Bayam&oacute;n, PR</span>
+          {/* <span className="truncate text-xs">Bayam&oacute;n, PR</span> */}
         </div>
       </SidebarHeader>
       <SidebarContent>

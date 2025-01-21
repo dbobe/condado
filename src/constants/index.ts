@@ -28,7 +28,7 @@ export const GENERAL_NAV_ITEMS: NavigationItem[] = [
   {
     icon: HomeIcon,
     label: "Home",
-    href: "/dashboard",
+    href: "/",
   },
   {
     icon: ContactIcon,
@@ -38,7 +38,7 @@ export const GENERAL_NAV_ITEMS: NavigationItem[] = [
   {
     icon: FileText,
     label: "Documents",
-    href: "/dashboard/documents",
+    href: "/documents",
   },
 ];
 
@@ -64,11 +64,11 @@ export const ADMIN_NAV_ITEMS: NavigationItem[] = [
   {
     icon: WrenchIcon,
     label: "Company Management",
-    href: "/dashboard/company-management",
+    href: "/admin/company-management",
   },
   {
     icon: UserCogIcon,
     label: "User Management",
-    href: "/dashboard/user-management",
+    href: "/admin/user-management",
   },
 ];

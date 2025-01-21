@@ -14,50 +14,68 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                String    @id @default(cuid())
+  firstName         String
+  lastName          String
+  profilePictureUrl String?
+  email             String    @unique
+  password          String
+  emailVerified     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  memberships Membership[]
+}
+
 model Company {
-  id               String    @id @default(cuid())
+  id               String       @id @default(cuid())
   // Company information
   name             String
+  slug             String       @unique
   logoUrl          String?
   websiteUrl       String?
   // Company branding
   primaryColor     String?
   secondaryColor   String?
   // Company type and relationships
-  isPrimary        Boolean   @default(false)
+  isPrimary        Boolean      @default(false)
   // Self-relation to primary company
   primaryCompanyId String?
-  primaryCompany   Company?  @relation("CompanyToPrimaryCompany", fields: [primaryCompanyId], references: [id])
+  primaryCompany   Company?     @relation("CompanyToPrimaryCompany", fields: [primaryCompanyId], references: [id])
   // Subsidiaries
-  subsidiaries     Company[] @relation("CompanyToSubsidiary")
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
-
-  // Relations
-  users User[]
-  @@check(isPrimary == (primaryCompanyId == null))
+  subsidiaries     Company[]    @relation("CompanyToSubsidiary")
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  Membership       Membership[]
+  primaryCompanies Company[]    @relation("CompanyToPrimaryCompany")
+  subsidiaryOf     Company[]    @relation("CompanyToSubsidiary")
 
   @@unique([isPrimary, primaryCompanyId])
-  @@map("companies")
 }
 
-model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  firstName String
-  lastName  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  // Role enum for user permissions
-  role UserRole @default(USER)
-
-  // Relation to company (required)
+model Membership {
+  id        String      @id @default(cuid())
+  role      SystemRoles @relation(fields: [roleId], references: [id])
+  roleId    Int
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
   companyId String
-  company   Company @relation(fields: [companyId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
-  @@map("users")
+  @@map("memberships")
+}
+
+model SystemRoles {
+  id          Int          @id @default(autoincrement())
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Membership  Membership[]
+
+  @@map("system_roles")
 }
 
 enum UserRole {

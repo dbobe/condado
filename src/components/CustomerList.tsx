@@ -44,7 +44,6 @@ export default function CustomerList() {
   const itemsPerPage = 10;
 
   const pathname = usePathname();
-  console.log("🚀 ~ CustomerList ~ pathname:", pathname);
 
   const company = decodeURIComponent(pathname.split("/").pop() || "");
 

@@ -15,6 +15,9 @@ import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import Link from "next/link";
+import { toast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+
 interface AuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: T;
@@ -29,6 +32,7 @@ export default function AuthForm<T extends FieldValues>({
   type,
 }: AuthFormProps<T>) {
   const isSignIn = type === "SIGN_IN";
+  const router = useRouter();
 
   const form: UseFormReturn<T> = useForm({
     resolver: zodResolver(schema),
@@ -36,7 +40,33 @@ export default function AuthForm<T extends FieldValues>({
   });
 
   const handleSubmit: SubmitHandler<T> = async (data) => {
-    console.log(data);
+    try {
+      const result = await onSubmit(data);
+
+      if (!result.success) {
+        toast({
+          title: `Error ${isSignIn ? "signing in" : "signing up"}`,
+          description: result.error ?? "Something went wrong",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Success",
+        description: isSignIn
+          ? "Signed in successfully"
+          : "Account created successfully",
+      });
+      router.push("/");
+    } catch (error) {
+      console.error("Authentication error", error);
+      toast({
+        title: `Error ${isSignIn ? "signing in" : "signing up"}`,
+        description: "Something went wrong",
+        variant: "destructive",
+      });
+    }
   };
 
   return (

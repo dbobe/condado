@@ -2,6 +2,7 @@
 
 import AuthForm from "@/components/AuthForm";
 import CWlogo from "@/components/CWlogo";
+import { signInWithCredentials } from "@/lib/actions/auth";
 import { signInSchema } from "@/lib/validations";
 // import SignInForm from "@/components/auth/SignInForm";
 import Image from "next/image";
@@ -28,7 +29,7 @@ export default function SignInPage() {
                 email: "",
                 password: "",
               }}
-              onSubmit={() => {}}
+              onSubmit={signInWithCredentials}
             />
           </div>
         </div>

@@ -51,11 +51,12 @@ model Company {
   primaryCompanies Company[]    @relation("CompanyToPrimaryCompany")
   subsidiaryOf     Company[]    @relation("CompanyToSubsidiary")
 
-  @@unique([isPrimary, primaryCompanyId])
+  // @@unique([isPrimary, primaryCompanyId])
 }
 
 model Membership {
   id        String      @id @default(cuid())
+  userRole  UserRole
   role      SystemRoles @relation(fields: [roleId], references: [id])
   roleId    Int
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -64,8 +65,6 @@ model Membership {
   companyId String
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-
-  @@map("memberships")
 }
 
 model SystemRoles {
@@ -74,11 +73,10 @@ model SystemRoles {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   Membership  Membership[]
-
-  @@map("system_roles")
 }
 
 enum UserRole {
+  SUPER_ADMIN
   ADMIN
   MANAGER
   USER

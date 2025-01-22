@@ -19,7 +19,7 @@ interface NavMainProps {
 export function NavMain({ groupLabel, items }: NavMainProps) {
   const pathname = usePathname();
   const paths = pathname.split("/").filter((path) => path);
-  console.log("🚀 ~ NavMain ~ paths:", paths);
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{groupLabel}</SidebarGroupLabel>

@@ -44,7 +44,7 @@ export default function AppSidebar({
         {isAdmin && <NavMain groupLabel="Admin" items={ADMIN_NAV_ITEMS} />}
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   );

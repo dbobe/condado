@@ -1,0 +1,83 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearchPostgres"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String    @id @default(cuid())
+  firstName         String
+  lastName          String
+  profilePictureUrl String?
+  email             String    @unique
+  password          String
+  emailVerified     DateTime?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  memberships Membership[]
+}
+
+model Company {
+  id               String       @id @default(cuid())
+  // Company information
+  name             String
+  slug             String       @unique
+  logoUrl          String?
+  websiteUrl       String?
+  // Company branding
+  primaryColor     String?
+  secondaryColor   String?
+  // Company type and relationships
+  isPrimary        Boolean      @default(false)
+  // Self-relation to primary company
+  primaryCompanyId String?
+  primaryCompany   Company?     @relation("CompanyToPrimaryCompany", fields: [primaryCompanyId], references: [id])
+  // Subsidiaries
+  subsidiaries     Company[]    @relation("CompanyToSubsidiary")
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  Membership       Membership[]
+  primaryCompanies Company[]    @relation("CompanyToPrimaryCompany")
+  subsidiaryOf     Company[]    @relation("CompanyToSubsidiary")
+
+  // @@unique([isPrimary, primaryCompanyId])
+}
+
+model Membership {
+  id        String      @id @default(cuid())
+  userRole  UserRole
+  role      SystemRoles @relation(fields: [roleId], references: [id])
+  roleId    Int
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  company   Company     @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId String
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model SystemRoles {
+  id          Int          @id @default(autoincrement())
+  description String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Membership  Membership[]
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  USER
+}

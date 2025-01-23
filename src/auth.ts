@@ -17,7 +17,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         try {
           if (!credentials?.email || !credentials?.password) {
-            throw new Error("Invalid credentials");
+            return null;
           }
 
           const user = await prisma.user.findUnique({
@@ -26,8 +26,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
           });
 
-          if (user === null) {
-            throw new Error("Invalid credentials");
+          if (!user) {
+            return null;
           }
 
           const isPasswordValid = await compare(
@@ -36,7 +36,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           );
 
           if (!isPasswordValid) {
-            throw new Error("Invalid credentials");
+            return null;
           }
 
           return {

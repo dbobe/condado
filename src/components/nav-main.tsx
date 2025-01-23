@@ -11,6 +11,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import { cn } from "@/lib/utils";
+import { logOut } from "@/lib/actions/auth";
 
 interface NavMainProps {
   groupLabel: string;
@@ -34,10 +35,17 @@ export function NavMain({ groupLabel, items }: NavMainProps) {
                 item.href === `/${paths[0]}` && "bg-accent"
               )}
             >
-              <Link href={item.href}>
-                {item.icon && <item.icon />}
-                <span>{item.label}</span>
-              </Link>
+              {item.label === "Logout" ? (
+                <button onClick={logOut}>
+                  {item.icon && <item.icon />}
+                  <span>{item.label}</span>
+                </button>
+              ) : (
+                <Link href={item.href}>
+                  {item.icon && <item.icon />}
+                  <span>{item.label}</span>
+                </Link>
+              )}
             </SidebarMenuButton>
           </SidebarMenuItem>
         ))}

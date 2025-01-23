@@ -7,7 +7,7 @@ import {
   SidebarFooter,
   SidebarHeader,
 } from "@/components/ui/sidebar";
-import CWlogo from "./CWlogo";
+// import CWlogo from "./CWlogo";
 import { NavMain } from "./nav-main";
 import {
   ADMIN_NAV_ITEMS,
@@ -15,6 +15,7 @@ import {
   SUPPORT_NAV_ITEMS,
 } from "@/constants";
 import { NavUser } from "./nav-user";
+import { TeamSwitcher } from "./team-switcher";
 
 export const user = {
   name: "Fulano deTal",
@@ -29,14 +30,15 @@ export default function AppSidebar({
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="flex items-center gap-2 flex-row">
-        <div className="flex aspect-square size-8 items-center justify-center rounded-md text-primary">
+      <SidebarHeader>
+        <TeamSwitcher />
+        {/*<div className="flex aspect-square size-8 items-center justify-center rounded-md text-primary">
           <CWlogo />
         </div>
         <div className="grid flex-1 text-left text-lg leading-tight">
           <span className="truncate font-semibold">Condado Window</span>
-          {/* <span className="truncate text-xs">Bayam&oacute;n, PR</span> */}
-        </div>
+           <span className="truncate text-xs">Bayam&oacute;n, PR</span> 
+        </div>*/}
       </SidebarHeader>
       <SidebarContent>
         <NavMain groupLabel="General" items={GENERAL_NAV_ITEMS} />

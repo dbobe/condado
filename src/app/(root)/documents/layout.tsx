@@ -1,4 +1,4 @@
-import CustomerList from "@/components/CustomerList";
+// import CustomerList from "@/components/CustomerList";
 import { ReactNode } from "react";
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -8,7 +8,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <h1 className="text-lg">Document Management</h1>
       </div>
       <div className="flex flex-1 overflow-hidden">
-        <CustomerList />
+        {/* <CustomerList /> */}
         <div className="flex-1 overflow-auto flex flex-col justify-between">
           {children}
         </div>

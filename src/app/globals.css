@@ -41,6 +41,16 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --badge-critical: 0 84% 60%;
+    --badge-critical-foreground: 0 0% 98%;
+    --badge-low: 33 100% 50%;
+    --badge-low-foreground: 0 0% 10%;
+    --badge-medium: 43 74% 66%;
+    --badge-medium-foreground: 0 0% 10%;
+    --badge-high: 173 58% 39%;
+    --badge-high-foreground: 0 0% 98%;
+    --badge-full: 197 37% 24%;
+    --badge-full-foreground: 0 0% 98%;
   }
   .dark {
     --background: 0 0% 9%;
@@ -75,7 +85,25 @@ body {
     --sidebar-accent-foreground: 240 4.8% 95.9%;
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
+    --badge-critical: 0 84% 60%;
+    --badge-critical-foreground: 0 0% 98%;
+    --badge-low: 33 80% 50%;
+    --badge-low-foreground: 0 0% 10%;
+    --badge-medium: 43 60% 66%;
+    --badge-medium-foreground: 0 0% 10%;
+    --badge-high: 173 40% 45%;
+    --badge-high-foreground: 0 0% 98%;
+    --badge-full: 197 40% 40%;
+    --badge-full-foreground: 0 0% 98%;
   }
+}
+
+h6 {
+  @apply font-bold text-sm;
+}
+
+p {
+  @apply text-sm;
 }
 
 @layer base {

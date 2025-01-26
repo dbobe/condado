@@ -32,7 +32,7 @@ export function TeamSwitcher() {
             <SidebarMenuButton
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-              disabled={teams.length === 1}
+              // disabled={teams.length === 1}
             >
               <div className="relative flex aspect-square size-10 items-center justify-center rounded-lg text-primary-foreground bg-primary">
                 <div className="relative size-8 items-center justify-center">

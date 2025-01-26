@@ -21,7 +21,6 @@ export function NavBreadcrumbs({
   capitalizeLabel = true,
 }: NavBreadcrumbsProps) {
   const pathname = usePathname();
-  console.log("🚀 ~ pathname:", pathname);
 
   const generateBreadcrumbs = () => {
     const paths = pathname.split("/").filter((path) => path);

@@ -25,24 +25,23 @@ export const columns: ColumnDef<InventoryPart>[] = [
     header: "Stock Level",
     cell: ({ row }) => {
       let customClasses = "";
-      const stockLevel = row.getValue("stockLevel");
+      const stockLevel: string = row.getValue("stockLevel");
 
       if (stockLevel === "Full") {
-        customClasses = "bg-green-500";
+        customClasses = "bg-badge-full text-badge-full-foreground";
       } else if (stockLevel === "High") {
-        customClasses = "bg-blue-500";
+        customClasses = "bg-badge-high text-badge-high-foreground";
       } else if (stockLevel === "Medium") {
-        customClasses = "bg-orange-500";
+        customClasses = "bg-badge-medium text-badge-medium-foreground";
       } else if (stockLevel === "Low") {
-        customClasses = "bg-red-500";
+        customClasses = "bg-badge-low text-badge-low-foreground";
       } else if (stockLevel === "Critical") {
-        customClasses = "bg-red-800";
+        customClasses = "bg-badge-critical text-badge-critical-foreground";
       }
+
       return (
         <Badge variant="outline" className={cn("w-full h-8", customClasses)}>
-          <span className="text-xs text-center w-full">
-            {stockLevel as string}
-          </span>
+          <span className="text-xs text-center w-full">{stockLevel}</span>
         </Badge>
       );
     },

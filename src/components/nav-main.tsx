@@ -32,7 +32,8 @@ export function NavMain({ groupLabel, items }: NavMainProps) {
               asChild
               className={cn(
                 "hover:bg-accent",
-                item.href === `/${paths[0]}` && "bg-accent"
+                item.href === `/${paths[0]}` && "bg-accent",
+                item.href === pathname && "bg-accent"
               )}
             >
               {item.label === "Logout" ? (

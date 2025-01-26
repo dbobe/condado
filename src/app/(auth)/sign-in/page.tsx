@@ -4,14 +4,11 @@ import AuthForm from "@/components/AuthForm";
 import CWlogo from "@/components/CWlogo";
 import { signInWithCredentials } from "@/lib/actions/auth";
 import { signInSchema } from "@/lib/validations";
-import { hash } from "bcryptjs";
 // import SignInForm from "@/components/auth/SignInForm";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function SignInPage() {
-  console.log(hash("G3n3s!s8083", 10));
-
   return (
     <main className="grid min-h-svh lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">

@@ -33,18 +33,18 @@ export default async function RootLayout({
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/jgq3ink.css" />
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <SessionProvider session={session}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <body
-            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-          >
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <SessionProvider session={session}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             {children}
             <Toaster />
-          </body>
-        </ThemeProvider>
-      </SessionProvider>
+          </ThemeProvider>
+        </SessionProvider>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </body>
     </html>
   );
 }

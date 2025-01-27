@@ -10,7 +10,7 @@ export default async function Customers({
   const customerId = params.id;
   const customer = customerId ? await getCustomerById(customerId) : null;
   return (
-    <div className="flex-1 overflow-auto flex flex-col justify-between">
+    <div className="flex flex-col flex-1 overflow-auto justify-between">
       <CustomerDetails customer={customer} />
     </div>
   );

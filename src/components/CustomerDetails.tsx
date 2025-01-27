@@ -1,23 +1,33 @@
 "use client";
 
-import { Partner } from "@prisma/client";
+import { Contact, Partner, PartnerAddress } from "@prisma/client";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
 import { Button } from "./ui/button";
 import { Pencil, Plus, Save, Trash2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import ContactContent from "./contacts/contact-content";
+import CustomerContent from "./customers/customer-content";
 
 interface CustomerDetailsProps {
-  customer: Partner | null;
+  customer:
+    | (Partner & { contacts: Contact[]; partnerAddresses: PartnerAddress[] })
+    | null;
 }
+
 export default function CustomerDetails({ customer }: CustomerDetailsProps) {
   const [activeTab, setActiveTab] = useState("details");
   const [isEditing, setIsEditing] = useState(false);
+  // const [showContactForm, setShowContactForm] = useState(false);
 
   const isDisabled = !customer;
+
+  // const handleAddContact = (data: ContactFormData) => {
+  //   // TODO: Implement contact creation
+  //   console.log("New contact data:", data);
+  //   setShowContactForm(false);
+  // };
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -36,55 +46,10 @@ export default function CustomerDetails({ customer }: CustomerDetailsProps) {
               <TabsTrigger value="documents">Documents</TabsTrigger>
             </TabsList>
             <TabsContent value="details">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Details</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="space-y-1">
-                    <Label htmlFor="company">Company</Label>
-                    <Input
-                      id="company"
-                      value={customer.companyName}
-                      disabled={!isEditing}
-                    />
-                  </div>
-                  {/* <div className="space-y-1">
-                    <Label htmlFor="name">Name</Label>
-                    <Input
-                      id="name"
-                      value={customer.name}
-                      disabled={!isEditing}
-                    />
-                  </div> */}
-                  <div className="space-y-1">
-                    <Label htmlFor="email">Email</Label>
-                    <Input
-                      id="email"
-                      value={customer.email || ""}
-                      disabled={!isEditing}
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="phone">Phone</Label>
-                    <Input
-                      id="phone"
-                      value={customer.phone || ""}
-                      disabled={!isEditing}
-                    />
-                  </div>
-                </CardContent>
-              </Card>
+              <CustomerContent customer={customer} />
             </TabsContent>
             <TabsContent value="contacts">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-lg">Contacts</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div>Contacts information would go here.</div>
-                </CardContent>
-              </Card>
+              <ContactContent contacts={customer?.contacts || []} />
             </TabsContent>
             <TabsContent value="address">
               <Card>

@@ -35,6 +35,10 @@ export async function getCustomerById(id: string) {
   try {
     return await prisma.partner.findUnique({
       where: { id, companyId },
+      include: {
+        contacts: true,
+        partnerAddresses: true,
+      },
     });
   } catch (error) {
     console.error("Failed to fetch customer", error);

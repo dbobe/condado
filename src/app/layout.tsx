@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from "next-auth/react";
 import { Toaster } from "@/components/ui/toaster";
 import { auth } from "@/auth";
+import { themeScript } from "@/lib/theme-script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,22 +28,22 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await auth();
-  console.log("🚀 ~ session:", session);
 
   return (
     <html lang="en">
       <head>
         <link rel="stylesheet" href="https://use.typekit.net/jgq3ink.css" />
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <SessionProvider session={session}>
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+          >
             {children}
             <Toaster />
-          </ThemeProvider>
-        </body>
+          </body>
+        </ThemeProvider>
       </SessionProvider>
     </html>
   );

@@ -8,4 +8,8 @@
 - PostgreSQL
 - Docker
 - TypeScript
-- Shadcn/UI
+ Shadcn/UI
+
+## Versions
+- React 19
+- Next.js 15

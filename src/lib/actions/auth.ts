@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { User } from "@prisma/client";
 
 export const signInWithCredentials = async (
@@ -15,8 +15,8 @@ export const signInWithCredentials = async (
       redirect: false,
     });
 
-    if (!result?.ok || result?.error) {
-      return { success: false, error: result?.error || "Invalid credentials" };
+    if (result?.error) {
+      return { success: false, error: result?.error };
     }
 
     return { success: true };
@@ -27,3 +27,7 @@ export const signInWithCredentials = async (
 };
 
 // TODO: Add sign up logic (User can not be created by the user)
+
+export const logOut = async () => {
+  await signOut({ redirect: true, redirectTo: "/sign-in" });
+};

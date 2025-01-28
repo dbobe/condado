@@ -5,14 +5,9 @@ import { InventoryTable } from "@/components/dummyData/inventory-table";
 import { columns } from "@/components/dummyData/columns";
 import { inventory } from "@/lib/data";
 import { auth } from "@/auth";
-import { redirect } from "next/navigation";
 
 export default async function Home() {
   const session = await auth();
-
-  if (!session) {
-    return redirect("/sign-in");
-  }
 
   return (
     <div className="h-screen flex flex-col px-16">

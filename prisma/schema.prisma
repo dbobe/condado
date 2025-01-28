@@ -26,6 +26,8 @@ model User {
   updatedAt         DateTime  @updatedAt
 
   memberships Membership[]
+  Contact     Contact[]
+  Partner     Partner[]
 }
 
 model Company {
@@ -52,6 +54,7 @@ model Company {
   subsidiaryOf     Company[]    @relation("CompanyToSubsidiary")
 
   // @@unique([isPrimary, primaryCompanyId])
+  Partner Partner[]
 }
 
 model Membership {
@@ -80,4 +83,101 @@ enum UserRole {
   ADMIN
   MANAGER
   USER
+}
+
+model Partner {
+  id             String           @id @default(cuid())
+  company        Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId      String
+  companyName    String
+  email          String?
+  website        String?
+  phone          String?
+  fax            String?
+  country        String?
+  notes          String?          @db.Text
+  salesRep       User?            @relation(fields: [salesRepId], references: [id])
+  salesRepId     String?
+  isActive       Boolean          @default(true)
+  logoUrl        String?
+  logoName       String?
+  isBuilder      Boolean          @default(false)
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  Contact        Contact[]
+  PartnerAddress PartnerAddress[]
+}
+
+enum ContactType {
+  Customer
+  Supplier
+}
+
+model Contact {
+  id             String      @id @default(cuid())
+  partner        Partner     @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  partnerId      String
+  salutation     String?
+  firstName      String
+  lastName       String
+  position       String?
+  phone          String?
+  extension      String?
+  mobile         String?
+  fax            String?
+  email          String
+  defaultContact Boolean     @default(false)
+  notes          String?     @db.Text
+  type           ContactType
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+  isDeleted      Boolean     @default(false)
+  deletedBy      User?       @relation(fields: [deletedById], references: [id])
+  deletedById    String?
+  deletedAt      DateTime?
+}
+
+model PartnerAddress {
+  id           String        @id @default(cuid())
+  partner      Partner       @relation(fields: [partnerId], references: [id], onDelete: Cascade)
+  partnerId    String
+  description  String
+  address1     String
+  address2     String?
+  city         String
+  zip          String
+  state        CountryState? @relation(fields: [stateId], references: [id])
+  stateId      Int?
+  country      Country       @relation(fields: [countryId], references: [id])
+  countryId    String
+  isDefault    Boolean       @default(false)
+  notes        String?       @db.Text
+  billTo       Boolean       @default(false)
+  shipTo       Boolean       @default(false)
+  isDeleted    Boolean       @default(false)
+  isJobAddress Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model Country {
+  id             String           @id @db.VarChar(4)
+  name           String
+  id_2           String?
+  id_int         Int?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  PartnerAddress PartnerAddress[]
+  CountryState   CountryState[]
+}
+
+model CountryState {
+  id             Int              @id @default(autoincrement())
+  name           String
+  abbreviation   String?
+  country        Country          @relation(fields: [countryId], references: [id])
+  countryId      String
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  PartnerAddress PartnerAddress[]
 }

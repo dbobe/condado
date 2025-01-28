@@ -1,13 +1,17 @@
-"use client";
-
 import CustomerDetails from "@/components/CustomerDetails";
-import CrudBtnBar from "@/components/CrudBtnBar";
+import { getCustomerById } from "@/lib/actions/customer";
 
-export default function Customers() {
+export default async function Customers({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string }>;
+}) {
+  const params = await searchParams;
+  const customerId = params.id;
+  const customer = customerId ? await getCustomerById(customerId) : null;
   return (
     <div className="flex-1 overflow-auto flex flex-col justify-between">
-      <CustomerDetails customer={null} />
-      <CrudBtnBar />
+      <CustomerDetails customer={customer} />
     </div>
   );
 }

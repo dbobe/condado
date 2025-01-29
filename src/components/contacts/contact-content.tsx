@@ -1,4 +1,4 @@
-import { CheckIcon, XIcon, Plus } from "lucide-react";
+import { Plus, Pencil, Star } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Contact } from "@prisma/client";
@@ -22,6 +22,8 @@ import {
 } from "../ui/dialog";
 import { contactSchema } from "@/lib/validations";
 import { z } from "zod";
+import { DeleteContact } from "./delete-contact";
+import { formatPhoneNumber } from "react-phone-number-input";
 
 export default function ContactContent({ contacts }: { contacts: Contact[] }) {
   const [showContactForm, setShowContactForm] = useState(false);
@@ -76,35 +78,47 @@ export default function ContactContent({ contacts }: { contacts: Contact[] }) {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]"></TableHead>
                 <TableHead>Name</TableHead>
                 <TableHead>Position</TableHead>
                 <TableHead>Phone</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Primary Contact</TableHead>
+                <TableHead className="w-min">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {contacts.map((contact) => (
-                <TableRow
-                  key={contact.id}
-                  onClick={() => {
-                    setSelectedContact(contact);
-                    setShowContactForm(true);
-                  }}
-                  className="hover:bg-accent cursor-pointer"
-                >
+                <TableRow key={contact.id} className="odd:bg-muted">
+                  <TableCell>
+                    {contact.defaultContact ? (
+                      <Star
+                        fill="yellow"
+                        strokeWidth={0}
+                        className="size-5"
+                        aria-label="Primary Contact"
+                      />
+                    ) : null}
+                  </TableCell>
                   <TableCell>
                     {contact.firstName} {contact.lastName}
                   </TableCell>
                   <TableCell>{contact.position}</TableCell>
-                  <TableCell>{contact.phone}</TableCell>
+                  <TableCell>
+                    {contact.phone && formatPhoneNumber(contact.phone)}
+                  </TableCell>
                   <TableCell>{contact.email}</TableCell>
                   <TableCell>
-                    {contact.defaultContact ? (
-                      <CheckIcon className="h-4 w-4" />
-                    ) : (
-                      <XIcon className="h-4 w-4" />
-                    )}
+                    <Button
+                      variant={"ghost"}
+                      size={"icon"}
+                      onClick={() => {
+                        setSelectedContact(contact);
+                        setShowContactForm(true);
+                      }}
+                    >
+                      <Pencil />
+                    </Button>
+                    <DeleteContact contact={contact} />
                   </TableCell>
                 </TableRow>
               ))}

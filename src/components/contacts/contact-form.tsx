@@ -7,7 +7,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Contact, ContactType } from "@prisma/client";
+import { Contact, ContactType, Prisma } from "@prisma/client";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +16,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "../ui/form";
 import { useParams } from "next/navigation";
 import { SaveIcon, XIcon } from "lucide-react";
+import { createContact } from "@/lib/actions/contact";
+import { updateContact } from "@/lib/actions/contact";
+import { PhoneInput } from "../phone-input";
 
 export function ContactForm({
   contact,
@@ -27,12 +30,13 @@ export function ContactForm({
   onCancel: () => void;
 }) {
   const params = useParams();
-  const partnerId = params.partnerId as string;
+  const partnerId = params.id as string;
+
+  const isEditing = !!contact;
 
   const form = useForm<z.infer<typeof contactSchema>>({
     resolver: zodResolver(contactSchema),
     defaultValues: {
-      partnerId: contact?.partnerId ?? partnerId,
       salutation: contact?.salutation ?? "",
       firstName: contact?.firstName ?? "",
       lastName: contact?.lastName ?? "",
@@ -48,15 +52,31 @@ export function ContactForm({
     },
   });
 
-  function handleSubmit(values: z.infer<typeof contactSchema>) {
-    console.log(values);
-    onSubmit(values);
+  async function handleSubmit(values: z.infer<typeof contactSchema>) {
+    try {
+      if (isEditing && contact) {
+        await updateContact({
+          ...contact,
+          ...values,
+          id: contact?.id,
+        } as Contact);
+      } else {
+        await createContact({
+          ...values,
+          partner: { connect: { id: partnerId } },
+        } as Prisma.ContactCreateInput);
+      }
+      onSubmit(values);
+    } catch (error) {
+      console.error("Error submitting contact", error);
+    }
   }
 
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
+        onError={(errors) => console.log("Form errors:", errors)}
         className="space-y-4 w-full"
       >
         <div className="flex flex-row gap-4">
@@ -156,7 +176,11 @@ export function ContactForm({
               <FormItem className="flex-1">
                 <FormLabel>Work Phone</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <PhoneInput
+                    {...field}
+                    defaultCountry="US"
+                    international={false}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -180,7 +204,11 @@ export function ContactForm({
               <FormItem className="flex-1">
                 <FormLabel>Mobile</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <PhoneInput
+                    {...field}
+                    defaultCountry="US"
+                    international={false}
+                  />
                 </FormControl>
               </FormItem>
             )}
@@ -192,7 +220,11 @@ export function ContactForm({
               <FormItem className="flex-1">
                 <FormLabel>Fax</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <PhoneInput
+                    {...field}
+                    defaultCountry="US"
+                    international={false}
+                  />
                 </FormControl>
               </FormItem>
             )}

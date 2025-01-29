@@ -28,7 +28,6 @@ export const partnerSchema = z.object({
 });
 
 export const contactSchema = z.object({
-  partnerId: z.string(),
   salutation: z.string().optional(),
   firstName: z.string().min(2),
   lastName: z.string().min(2),

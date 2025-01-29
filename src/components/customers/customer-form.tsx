@@ -17,8 +17,10 @@ import { Partner } from "@prisma/client";
 
 export default function CustomerForm({
   customer,
+  disabled,
 }: {
   customer: Partner | null;
+  disabled: boolean;
 }) {
   console.log("🚀 ~ customer:", customer);
   const form = useForm<z.infer<typeof partnerSchema>>({
@@ -52,7 +54,11 @@ export default function CustomerForm({
             <FormItem>
               <FormLabel>Company Name</FormLabel>
               <FormControl>
-                <Input placeholder="Company Name" {...field} />
+                <Input
+                  placeholder="Company Name"
+                  {...field}
+                  disabled={disabled}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

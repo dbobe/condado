@@ -1,29 +1,73 @@
-import { Prisma } from "@prisma/client";
-import { ChangeEvent } from "react";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
+import { Control } from "react-hook-form";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { FormData } from "../multi-step-form";
 
 type CompanyFormProps = {
-  data: Prisma.PartnerCreateInput;
-  updateData: (data: { company: Prisma.PartnerCreateInput }) => void;
+  control: Control<FormData>;
 };
 
-export function CompanyForm({ data, updateData }: CompanyFormProps) {
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    updateData({ company: { ...data, [name]: value } });
-  };
+export function CompanyForm({ control }: CompanyFormProps) {
   return (
     <div className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="companyName">Company Name</Label>
-        <Input
-          id="companyName"
-          name="companyName"
-          value={data.companyName}
-          onChange={handleChange}
-        />
-      </div>
+      <FormField
+        control={control}
+        name="company.companyName"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Company Name</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={control}
+        name="company.email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={control}
+        name="company.website"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Website</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={control}
+        name="company.phone"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Phone</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </div>
   );
 }

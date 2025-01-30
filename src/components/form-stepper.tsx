@@ -5,9 +5,9 @@ type FormStepperProps = {
 };
 
 export function FormStepper({ currentStep }: FormStepperProps) {
-  const steps = ["Company", "Contact", "Address"];
+  const steps = ["Company", "PrimaryContact", "Main Address"];
   return (
-    <div className="flex justify-between items-center mb-8">
+    <div className="flex justify-evenly items-center mb-8">
       {steps.map((step, index) => (
         <div key={step} className="flex flex-col items-center">
           <div

@@ -1,104 +1,187 @@
 "use client";
 
-import { ContactType, Prisma } from "@prisma/client";
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "./ui/card";
 import { FormStepper } from "./form-stepper";
-import CustomerForm from "./customers/customer-form";
 import { CompanyForm } from "./customers/company-form";
-import { ContactForm } from "./contacts/contact-form";
+import { z } from "zod";
+import {
+  contactSchema,
+  partnerSchema,
+  partnerAddressSchema,
+} from "@/lib/validations";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Form } from "./ui/form";
+import { Button } from "./ui/button";
+import { ContactStepForm } from "./contacts/contact-step-form";
+import { ArrowLeftIcon, ArrowRightIcon, SendHorizonal } from "lucide-react";
 
-type FormData = {
-  company: Prisma.PartnerCreateInput;
-  contact: Prisma.ContactCreateInput;
-  address: Prisma.PartnerAddressCreateInput;
-};
+const formSchema = z.object({
+  company: z.object({ ...partnerSchema.shape }),
+  contact: z.object({ ...contactSchema.shape }),
+  address: z.object({ ...partnerAddressSchema.shape }),
+});
 
-const initialData: FormData = {
+export type FormData = z.infer<typeof formSchema>;
+
+const defaultFormData: FormData = {
   company: {
     companyName: "",
-    email: null,
-    website: null,
-    phone: null,
-    fax: null,
-    country: null,
-    notes: null,
-    isActive: true,
+    email: undefined,
+    website: undefined,
+    phone: undefined,
+    fax: undefined,
+    country: undefined,
+    notes: undefined,
+    salesRepId: undefined,
+    logoUrl: undefined,
+    logoName: undefined,
     isBuilder: false,
-    logoUrl: null,
-    logoName: null,
-    company: { connect: { id: "" } }, // Required relation
-    contacts: undefined,
-    partnerAddresses: undefined,
-    salesRep: undefined,
   },
   contact: {
+    salutation: undefined,
     firstName: "",
     lastName: "",
-    email: "", // Required field
-    type: "Customer" as ContactType, // Required enum field
-    salutation: null,
-    position: null,
-    phone: null,
-    extension: null,
-    mobile: null,
-    fax: null,
+    position: undefined,
+    phone: undefined,
+    extension: undefined,
+    mobile: undefined,
+    fax: undefined,
+    email: undefined,
+    notes: undefined,
     defaultContact: false,
-    notes: null,
-    isDeleted: false,
-    deletedById: null,
-    deletedAt: null,
+    type: "Customer", // Default contact type
   },
   address: {
     description: "",
     address1: "",
-    address2: null,
+    address2: undefined,
     city: "",
     zip: "",
-    stateId: null,
-    countryId: "", // Required
+    stateId: undefined,
+    countryId: undefined,
     isDefault: false,
-    notes: null,
+    isJobAddress: false,
+    notes: undefined,
     billTo: false,
     shipTo: false,
-    isDeleted: false,
-    isJobAddress: false,
   },
 };
 
 export function MultiStepForm() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState<FormData>(initialData);
 
-  const updateFormData = (stepData: Partial<FormData>) => {
-    setFormData((prev) => ({ ...prev, ...stepData }));
-  };
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: defaultFormData,
+    mode: "onChange",
+  });
 
-  const handleNext = () => {
-    setStep((prev) => Math.min(prev + 1, 3));
+  const handleNext = async () => {
+    const fields =
+      step === 1
+        ? [
+            "company.companyName",
+            "company.email",
+            "company.website",
+            "company.phone",
+            "company.fax",
+            "company.country",
+            "company.notes",
+            "company.salesRepId",
+            "company.logoUrl",
+            "company.logoName",
+            "company.isBuilder",
+          ]
+        : step === 2
+        ? [
+            "contact.salutation",
+            "contact.firstName",
+            "contact.lastName",
+            "contact.position",
+            "contact.phone",
+            "contact.extension",
+            "contact.mobile",
+            "contact.fax",
+            "contact.email",
+            "contact.notes",
+            "contact.defaultContact",
+            "contact.type",
+          ]
+        : [
+            "address.description",
+            "address.address1",
+            "address.address2",
+            "address.city",
+            "address.zip",
+            "address.stateId",
+            "address.countryId",
+            "address.isDefault",
+            "address.isJobAddress",
+            "address.notes",
+            "address.billTo",
+            "address.shipTo",
+          ];
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isStepValid = await form.trigger(fields as any);
+    if (isStepValid) {
+      setStep((prev) => Math.min(prev + 1, 3));
+    }
   };
 
   const handlePrevious = () => {
     setStep((prev) => Math.max(prev - 1, 1));
   };
 
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleSubmit = (data: FormData) => {
+    console.log(data);
     // TODO: Implement form submission logic
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle>Company Registration</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <FormStepper currentStep={step} />
-        {step === 1 && (
-          <CompanyForm data={formData.company} updateData={updateFormData} />
-        )}
-        {step === 2 && (<ContactForm />
-      </CardContent>
-    </Card>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(handleSubmit)}>
+        <Card className="w-full mx-auto pt-8">
+          {/* <CardHeader>
+            <CardTitle>Company Registration</CardTitle>
+          </CardHeader> */}
+          <CardContent>
+            <FormStepper currentStep={step} />
+            {step === 1 && <CompanyForm control={form.control} />}
+            {step === 2 && <ContactStepForm control={form.control} />}
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handlePrevious}
+              disabled={step === 1}
+            >
+              <ArrowLeftIcon className="mr-2" />
+              Prev
+            </Button>
+            {step < 3 ? (
+              <Button type="button" variant="outline" onClick={handleNext}>
+                Next
+                <ArrowRightIcon className="ml-2" />
+              </Button>
+            ) : (
+              <Button type="submit">
+                Submit
+                <SendHorizonal className="ml-2" />
+              </Button>
+            )}
+          </CardFooter>
+        </Card>
+      </form>
+    </Form>
   );
 }

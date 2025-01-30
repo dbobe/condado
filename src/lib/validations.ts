@@ -14,7 +14,9 @@ export const signUpSchema = z.object({
 });
 
 export const partnerSchema = z.object({
-  companyName: z.string().min(2),
+  companyName: z
+    .string()
+    .min(2, { message: "Company name must be at least 2 characters" }),
   email: z.string().email().optional(),
   website: z.string().url().optional(),
   phone: z.string().optional(),
@@ -29,8 +31,12 @@ export const partnerSchema = z.object({
 
 export const contactSchema = z.object({
   salutation: z.string().optional(),
-  firstName: z.string().min(2),
-  lastName: z.string().min(2),
+  firstName: z
+    .string()
+    .min(2, { message: "First name must be at least 2 characters" }),
+  lastName: z
+    .string()
+    .min(2, { message: "Last name must be at least 2 characters" }),
   position: z.string().optional(),
   phone: z.string().optional(),
   extension: z.string().optional(),
@@ -40,4 +46,19 @@ export const contactSchema = z.object({
   notes: z.string().optional(),
   defaultContact: z.boolean().optional(),
   type: z.nativeEnum(ContactType),
+});
+
+export const partnerAddressSchema = z.object({
+  description: z.string().min(2),
+  address1: z.string().min(2),
+  address2: z.string().optional(),
+  city: z.string().min(2),
+  zip: z.string().min(5),
+  stateId: z.number().optional(),
+  countryId: z.string().optional(),
+  isDefault: z.boolean().optional(),
+  isJobAddress: z.boolean().optional(),
+  notes: z.string().optional(),
+  billTo: z.boolean().optional(),
+  shipTo: z.boolean().optional(),
 });

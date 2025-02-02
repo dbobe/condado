@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { getCustomerById } from "@/lib/actions/customer";
-import { HousePlus, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 export default async function Customers({
   searchParams,

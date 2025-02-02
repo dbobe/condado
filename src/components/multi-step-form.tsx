@@ -1,13 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "./ui/card";
+import { Card, CardContent, CardFooter } from "./ui/card";
 import { FormStepper } from "./form-stepper";
 import { CompanyForm } from "./customers/company-form";
 import { z } from "zod";

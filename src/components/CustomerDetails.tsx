@@ -17,12 +17,14 @@ interface CustomerDetailsProps {
 export default function CustomerDetails({ customer }: CustomerDetailsProps) {
   const [activeTab, setActiveTab] = useState("details");
 
-  const isDisabled = !customer;
+    const isDisabled = !customer;
+
+    
 
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex-1 p-4 overflow-auto">
-        <h2 className="text-2xl font-bold mb-4">{customer.companyName}</h2>
+        <h2 className="text-2xl font-bold mb-4">{customer?.companyName}</h2>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid grid-cols-4 w-full justify-start overflow-x-scroll">
             <TabsTrigger value="details">Details</TabsTrigger>

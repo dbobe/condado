@@ -16,6 +16,7 @@ import { Form } from "./ui/form";
 import { Button } from "./ui/button";
 import { ContactStepForm } from "./contacts/contact-step-form";
 import { ArrowLeftIcon, ArrowRightIcon, SendHorizonal } from "lucide-react";
+import AddressForm from "./customers/address-form";
 
 const formSchema = z.object({
   company: z.object({ ...partnerSchema.shape }),
@@ -151,6 +152,7 @@ export function MultiStepForm() {
             <FormStepper currentStep={step} />
             {step === 1 && <CompanyForm control={form.control} />}
             {step === 2 && <ContactStepForm control={form.control} />}
+            {step === 3 && <AddressForm control={form.control} />}
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button

@@ -49,14 +49,19 @@ export const contactSchema = z.object({
 });
 
 export const partnerAddressSchema = z.object({
-  description: z.string().min(2),
-  address1: z.string().min(2),
+  description: z
+    .string()
+    .min(2, { message: "Description must be at least 2 characters" }),
+  address1: z
+    .string()
+    .min(2, { message: "Address must be at least 2 characters" }),
   address2: z.string().optional(),
-  city: z.string().min(2),
-  zip: z.string().min(5),
+  city: z.string().min(2, { message: "City must be at least 2 characters" }),
+  zip: z.string().min(5, { message: "Zip must be at least 5 characters" }),
   stateId: z.number().optional(),
   countryId: z.string().optional(),
   isDefault: z.boolean().optional(),
+
   isJobAddress: z.boolean().optional(),
   notes: z.string().optional(),
   billTo: z.boolean().optional(),

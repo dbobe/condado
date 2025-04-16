@@ -13,9 +13,11 @@ import {
   ADMIN_NAV_ITEMS,
   GENERAL_NAV_ITEMS,
   SUPPORT_NAV_ITEMS,
+  SUPER_ADMIN_NAV_ITEMS,
 } from "@/constants";
 import { NavUser } from "./nav-user";
 import { TeamSwitcher } from "./team-switcher";
+import { useUser } from "@/hooks/use-user";
 
 export const user = {
   name: "Fulano deTal",
@@ -26,7 +28,14 @@ export const user = {
 export default function AppSidebar({
   ...props
 }: ComponentProps<typeof Sidebar>) {
-  const isAdmin = true;
+  const { user } = useUser();
+  const isAdmin = user?.memberships.some(
+    (membership) =>
+      membership.role === "ADMIN" || membership.role === "SUPER_ADMIN"
+  );
+  const isSuperAdmin = user?.memberships.some(
+    (membership) => membership.role === "SUPER_ADMIN"
+  );
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -44,6 +53,12 @@ export default function AppSidebar({
         <NavMain groupLabel="General" items={GENERAL_NAV_ITEMS} />
         <NavMain groupLabel="Support" items={SUPPORT_NAV_ITEMS} />
         {isAdmin && <NavMain groupLabel="Admin" items={ADMIN_NAV_ITEMS} />}
+        {isSuperAdmin && (
+          <NavMain
+            groupLabel="System Configuration"
+            items={SUPER_ADMIN_NAV_ITEMS}
+          />
+        )}
       </SidebarContent>
       <SidebarFooter>
         <NavUser />

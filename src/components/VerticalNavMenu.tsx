@@ -14,6 +14,7 @@ import {
   LucideIcon,
   WrenchIcon,
   UserCogIcon,
+  MonitorCog,
 } from "lucide-react";
 
 export type NavItem = {
@@ -68,6 +69,14 @@ export const adminNavItems: NavItem[] = [
     icon: UserCogIcon,
     label: "User Management",
     href: "/dashboard/user-management",
+  },
+];
+
+export const superAdminNavItems: NavItem[] = [
+  {
+    icon: MonitorCog,
+    label: "System Management",
+    href: "/admin/system-management",
   },
 ];
 

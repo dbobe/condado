@@ -3,11 +3,10 @@ import { getCustomerById } from "@/lib/actions/customer";
 import { notFound } from "next/navigation";
 
 interface companyNameProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 export default async function Page({ params }: companyNameProps) {
-  const customer = await getCustomerById(params.id);
-  console.log("🚀 ~ Page ~ customer:", customer);
+  const customer = await getCustomerById((await params).id);
 
   if (!customer) {
     notFound();

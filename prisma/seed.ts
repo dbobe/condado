@@ -1,9 +1,48 @@
-import { PrismaClient, ContactType } from "@prisma/client";
+import { PrismaClient, ContactType, UserRole } from "@prisma/client";
+import { hash } from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  // Ensure we have a country for addresses
+  // First create the company
+  const company = await prisma.company.create({
+    data: {
+      name: "Condado Window",
+      slug: "condado-window",
+      logoUrl: "/img/cw-logo.png",
+      websiteUrl: "https://condadowindow.com",
+      primaryColor: "#D21211",
+      secondaryColor: "#232323",
+      isPrimary: true,
+    },
+  });
+
+  const user = await prisma.user.create({
+    data: {
+      firstName: "David",
+      lastName: "Bobe",
+      profilePictureUrl: "/img/dbobepr.png",
+      email: "admin@condadowindow.com",
+      password: await hash("G3n3s!s8083", 10),
+    },
+  });
+
+  const role = await prisma.systemRoles.create({
+    data: {
+      description: "Administrator",
+    },
+  });
+
+  await prisma.membership.create({
+    data: {
+      userId: user.id,
+      companyId: company.id,
+      userRole: UserRole.SUPER_ADMIN,
+      roleId: role.id,
+    },
+  });
+
+  // Create country
   const country = await prisma.country.upsert({
     where: { id: "US" },
     update: {},
@@ -15,13 +54,13 @@ async function main() {
 
   const partners = [
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Tech Solutions Inc",
       email: "info@techsolutions.com",
       website: "www.techsolutions.com",
       phone: "555-0101",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       isBuilder: true,
       contact: {
         firstName: "John",
@@ -40,13 +79,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Build Masters LLC",
       email: "contact@buildmasters.com",
       website: "www.buildmasters.com",
       phone: "555-0201",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       isBuilder: true,
       contact: {
         firstName: "Sarah",
@@ -65,13 +104,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Global Supplies Co",
       email: "info@globalsupplies.com",
       website: "www.globalsupplies.com",
       phone: "555-0301",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       contact: {
         firstName: "Michael",
         lastName: "Chen",
@@ -89,13 +128,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Premier Construction",
       email: "info@premierconstruction.com",
       website: "www.premierconstruction.com",
       phone: "555-0401",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       isBuilder: true,
       contact: {
         firstName: "Emily",
@@ -114,13 +153,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Quality Materials Ltd",
       email: "contact@qualitymaterials.com",
       website: "www.qualitymaterials.com",
       phone: "555-0501",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       contact: {
         firstName: "David",
         lastName: "Wilson",
@@ -138,13 +177,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Innovative Builders",
       email: "hello@innovativebuilders.com",
       website: "www.innovativebuilders.com",
       phone: "555-0601",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       isBuilder: true,
       contact: {
         firstName: "Lisa",
@@ -163,13 +202,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Eco Builders",
       email: "contact@ecobuilders.com",
       website: "www.ecobuilders.com",
       phone: "555-0701",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       isBuilder: true,
       contact: {
         firstName: "Robert",
@@ -188,13 +227,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Steel & More",
       email: "info@steelandmore.com",
       website: "www.steelandmore.com",
       phone: "555-0801",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       contact: {
         firstName: "Amanda",
         lastName: "Martinez",
@@ -212,13 +251,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Modern Homes Construction",
       email: "info@modernhomes.com",
       website: "www.modernhomes.com",
       phone: "555-0901",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       isBuilder: true,
       contact: {
         firstName: "Kevin",
@@ -237,13 +276,13 @@ async function main() {
       },
     },
     {
-      companyId: "cm670wuud0000nnd0lv2vhtvt",
+      companyId: company.id,
       companyName: "Premium Supplies Co",
       email: "contact@premiumsupplies.com",
       website: "www.premiumsupplies.com",
       phone: "555-1001",
       country: "US",
-      salesRepId: "cm670yrz50001nnd0qz4d5qro",
+      salesRepId: user.id,
       contact: {
         firstName: "Rachel",
         lastName: "Thompson",
@@ -269,13 +308,13 @@ async function main() {
     await prisma.partner.create({
       data: {
         ...partnerInfo,
-        Contact: {
+        contacts: {
           create: {
             ...contact,
             defaultContact: true,
           },
         },
-        PartnerAddress: {
+        partnerAddresses: {
           create: {
             ...address,
             countryId: country.id,

@@ -13,11 +13,13 @@ import ThemeToggler from "@/components/ThemeToggler";
 import {
   adminNavItems,
   generalNavItems,
+  superAdminNavItems,
   supportNavItems,
 } from "./VerticalNavMenu";
 
 export default function Navbar() {
   const isAdmin = true;
+  const isSuperAdmin = true;
 
   return (
     <div className="bg-primary py-2 px-5 flex justify-between text-white">
@@ -59,6 +61,19 @@ export default function Navbar() {
                 <DropdownMenuLabel className="mt-4">Admin</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {adminNavItems.map((item) => (
+                  <DropdownMenuItem key={item.label}>
+                    <Link href={item.href}>{item.label}</Link>
+                  </DropdownMenuItem>
+                ))}
+              </>
+            )}
+            {isSuperAdmin && (
+              <>
+                <DropdownMenuLabel className="mt-4">
+                  System Configuration
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                {superAdminNavItems.map((item) => (
                   <DropdownMenuItem key={item.label}>
                     <Link href={item.href}>{item.label}</Link>
                   </DropdownMenuItem>

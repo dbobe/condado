@@ -1,23 +1,22 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { Partner } from "@prisma/client";
 import { CustomerFilter } from "./customers/customer-filter";
 import { SidelistCard } from "./sidelist-card";
 import { CustomPagination } from "./custom-pagination";
+import Link from "next/link";
+import { getTotalPages, paginate } from "@/lib/utils";
 
 interface CustomerListProps {
   customers: Partner[];
 }
 
 export default function CustomerList({ customers }: CustomerListProps) {
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  // Get the selected customer ID from URL
-  const selectedId = searchParams.get("id");
+  const companyId = pathname.split("/").pop();
 
   const [filter, setFilter] = useState("");
   const [filterBy, setFilterBy] = useState("");
@@ -26,19 +25,12 @@ export default function CustomerList({ customers }: CustomerListProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Calculate pagination
-  const totalPages = Math.ceil(filteredCustomers.length / itemsPerPage);
-  const paginatedCustomers = filteredCustomers.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
-  );
-
-  const handleCustomerSelect = (customerId: string) => {
-    // Update URl with selected customer ID
-    const params = new URLSearchParams(searchParams);
-    params.set("id", customerId);
-    router.push(`${pathname}?${params.toString()}`);
-  };
+  const totalPages = getTotalPages(filteredCustomers, itemsPerPage);
+  const paginatedCustomers = paginate(
+    filteredCustomers,
+    currentPage,
+    itemsPerPage
+  ) as Partner[];
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,12 +77,13 @@ export default function CustomerList({ customers }: CustomerListProps) {
               </div>
             ) : (
               paginatedCustomers.map((customer) => (
-                <SidelistCard
-                  key={customer.id}
-                  customer={customer}
-                  isSelected={selectedId === customer.id}
-                  onSelect={handleCustomerSelect}
-                />
+                <Link href={`/customers/${customer.id}`} key={customer.id}>
+                  <SidelistCard
+                    key={customer.id}
+                    customer={customer}
+                    isSelected={companyId === customer.id}
+                  />
+                </Link>
               ))
             )}
           </div>
